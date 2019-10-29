@@ -1,0 +1,63 @@
+/**
+ * This injects Tailwind's base styles, which is a combination of
+ * Normalize.css and some additional base styles.
+ *
+ * You can see the styles here:
+ * https://github.com/tailwindcss/tailwindcss/blob/master/css/preflight.css
+ *
+ * If using `postcss-import`, use this import instead:
+ *
+ * @import "tailwindcss/base";
+ */
+ @tailwind base;
+
+ /**
+  * This injects any component classes registered by plugins.
+  *
+  * If using `postcss-import`, use this import instead:
+  *
+  * @import "tailwindcss/components";
+  */
+ @tailwind components;
+ 
+ /**
+  * Here you would add any of your custom component classes; stuff that you'd
+  * want loaded *before* the utilities so that the utilities could still
+  * override them.
+  *
+  * Example:
+  *
+  * .btn { ... }
+  * .form-input { ... }
+  *
+  * Or if using a preprocessor or `postcss-import`:
+  *
+  * @import "components/buttons";
+  * @import "components/forms";
+  */
+ 
+ /**
+  * This injects all of Tailwind's utility classes, generated based on your
+  * config file.
+  *
+  * If using `postcss-import`, use this import instead:
+  *
+  * @import "tailwindcss/utilities";
+  */
+ @tailwind utilities;
+ 
+ /**
+  * Here you would add any custom utilities you need that don't come out of the
+  * box with Tailwind.
+  *
+  * Example :
+  *
+  * .bg-pattern-graph-paper { ... }
+  * .skew-45 { ... }
+  *
+  * Or if using a preprocessor or `postcss-import`:
+  *
+  * @import "utilities/background-patterns";
+  * @import "utilities/skew-transforms";
+  */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRhaWx3aW5kLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7Ozs7OztFQVVFO0NBQ0QsY0FBYzs7Q0FFZDs7Ozs7O0dBTUU7Q0FDRixvQkFBb0I7O0NBRXBCOzs7Ozs7Ozs7Ozs7OztHQWNFOztDQUVGOzs7Ozs7O0dBT0U7Q0FDRixtQkFBbUI7O0NBRW5COzs7Ozs7Ozs7Ozs7O0dBYUUiLCJmaWxlIjoiaW5kZXguY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXHJcbiAqIFRoaXMgaW5qZWN0cyBUYWlsd2luZCdzIGJhc2Ugc3R5bGVzLCB3aGljaCBpcyBhIGNvbWJpbmF0aW9uIG9mXHJcbiAqIE5vcm1hbGl6ZS5jc3MgYW5kIHNvbWUgYWRkaXRpb25hbCBiYXNlIHN0eWxlcy5cclxuICpcclxuICogWW91IGNhbiBzZWUgdGhlIHN0eWxlcyBoZXJlOlxyXG4gKiBodHRwczovL2dpdGh1Yi5jb20vdGFpbHdpbmRjc3MvdGFpbHdpbmRjc3MvYmxvYi9tYXN0ZXIvY3NzL3ByZWZsaWdodC5jc3NcclxuICpcclxuICogSWYgdXNpbmcgYHBvc3Rjc3MtaW1wb3J0YCwgdXNlIHRoaXMgaW1wb3J0IGluc3RlYWQ6XHJcbiAqXHJcbiAqIEBpbXBvcnQgXCJ0YWlsd2luZGNzcy9iYXNlXCI7XHJcbiAqL1xyXG4gQHRhaWx3aW5kIGJhc2U7XHJcblxyXG4gLyoqXHJcbiAgKiBUaGlzIGluamVjdHMgYW55IGNvbXBvbmVudCBjbGFzc2VzIHJlZ2lzdGVyZWQgYnkgcGx1Z2lucy5cclxuICAqXHJcbiAgKiBJZiB1c2luZyBgcG9zdGNzcy1pbXBvcnRgLCB1c2UgdGhpcyBpbXBvcnQgaW5zdGVhZDpcclxuICAqXHJcbiAgKiBAaW1wb3J0IFwidGFpbHdpbmRjc3MvY29tcG9uZW50c1wiO1xyXG4gICovXHJcbiBAdGFpbHdpbmQgY29tcG9uZW50cztcclxuIFxyXG4gLyoqXHJcbiAgKiBIZXJlIHlvdSB3b3VsZCBhZGQgYW55IG9mIHlvdXIgY3VzdG9tIGNvbXBvbmVudCBjbGFzc2VzOyBzdHVmZiB0aGF0IHlvdSdkXHJcbiAgKiB3YW50IGxvYWRlZCAqYmVmb3JlKiB0aGUgdXRpbGl0aWVzIHNvIHRoYXQgdGhlIHV0aWxpdGllcyBjb3VsZCBzdGlsbFxyXG4gICogb3ZlcnJpZGUgdGhlbS5cclxuICAqXHJcbiAgKiBFeGFtcGxlOlxyXG4gICpcclxuICAqIC5idG4geyAuLi4gfVxyXG4gICogLmZvcm0taW5wdXQgeyAuLi4gfVxyXG4gICpcclxuICAqIE9yIGlmIHVzaW5nIGEgcHJlcHJvY2Vzc29yIG9yIGBwb3N0Y3NzLWltcG9ydGA6XHJcbiAgKlxyXG4gICogQGltcG9ydCBcImNvbXBvbmVudHMvYnV0dG9uc1wiO1xyXG4gICogQGltcG9ydCBcImNvbXBvbmVudHMvZm9ybXNcIjtcclxuICAqL1xyXG4gXHJcbiAvKipcclxuICAqIFRoaXMgaW5qZWN0cyBhbGwgb2YgVGFpbHdpbmQncyB1dGlsaXR5IGNsYXNzZXMsIGdlbmVyYXRlZCBiYXNlZCBvbiB5b3VyXHJcbiAgKiBjb25maWcgZmlsZS5cclxuICAqXHJcbiAgKiBJZiB1c2luZyBgcG9zdGNzcy1pbXBvcnRgLCB1c2UgdGhpcyBpbXBvcnQgaW5zdGVhZDpcclxuICAqXHJcbiAgKiBAaW1wb3J0IFwidGFpbHdpbmRjc3MvdXRpbGl0aWVzXCI7XHJcbiAgKi9cclxuIEB0YWlsd2luZCB1dGlsaXRpZXM7XHJcbiBcclxuIC8qKlxyXG4gICogSGVyZSB5b3Ugd291bGQgYWRkIGFueSBjdXN0b20gdXRpbGl0aWVzIHlvdSBuZWVkIHRoYXQgZG9uJ3QgY29tZSBvdXQgb2YgdGhlXHJcbiAgKiBib3ggd2l0aCBUYWlsd2luZC5cclxuICAqXHJcbiAgKiBFeGFtcGxlIDpcclxuICAqXHJcbiAgKiAuYmctcGF0dGVybi1ncmFwaC1wYXBlciB7IC4uLiB9XHJcbiAgKiAuc2tldy00NSB7IC4uLiB9XHJcbiAgKlxyXG4gICogT3IgaWYgdXNpbmcgYSBwcmVwcm9jZXNzb3Igb3IgYHBvc3Rjc3MtaW1wb3J0YDpcclxuICAqXHJcbiAgKiBAaW1wb3J0IFwidXRpbGl0aWVzL2JhY2tncm91bmQtcGF0dGVybnNcIjtcclxuICAqIEBpbXBvcnQgXCJ1dGlsaXRpZXMvc2tldy10cmFuc2Zvcm1zXCI7XHJcbiAgKi8iXX0= */

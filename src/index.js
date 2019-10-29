@@ -18,20 +18,19 @@
 import "assets/scss/argon-dashboard-react.scss";
 import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/vendor/nucleo/css/nucleo.css";
-import 'react-table/react-table.css'
+import "react-table/react-table.css";
 import AdminLayout from "layouts/Admin.jsx";
 import AuthLayout from "layouts/Auth.jsx";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { createStore } from "redux";
-import { Provider } from 'react-redux'
+import { createStore, compose, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
 import rootReducer from "./views/author/store";
+import thunk from "redux-thunk";
+import "./index.css"
 
-
-
-
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

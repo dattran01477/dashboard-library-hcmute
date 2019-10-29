@@ -1,7 +1,14 @@
 import * as Action from "../action";
 
 const initialState = {
-  data: []
+  data: [],
+  criteria: {
+    pageIndex: 0,
+    pageSize: 25,
+    query: "",
+    sortDirection: "ASC",
+    sortField: ""
+  }
 };
 
 export default function authors(state = initialState, action) {
@@ -10,6 +17,11 @@ export default function authors(state = initialState, action) {
       return {
         ...state,
         data: action.data
+      };
+    case Action.AuthorsAction.CHANGE_CRITERIA:
+      return {
+        ...state,
+        criteria: action.criteria
       };
     default:
       return state;

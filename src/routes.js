@@ -22,7 +22,7 @@ import Register from "views/examples/Register.jsx";
 import Login from "views/examples/Login.jsx";
 import Tables from "views/examples/Tables.jsx";
 import Icons from "views/examples/Icons.jsx";
-import Authors from "views/author/Author.jsx";
+import Authors from "views/author/Authors.jsx";
 
 var routes = [
   {
