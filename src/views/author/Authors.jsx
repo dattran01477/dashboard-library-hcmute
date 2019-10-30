@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-// core components
 import Header from "components/Headers/Header.jsx";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +5,7 @@ import ReactTable from "react-table";
 import { Card, CardHeader, Container, Row } from "reactstrap";
 import * as Action from "../../store/action";
 import DateFormat from "../../ultils/datetime";
+import AuthorDialog from "./AuthorsDialog";
 
 const columns = [
   {
@@ -43,13 +26,14 @@ const columns = [
 
 function Icons() {
   const data = useSelector(state => state.authors.data);
+  const criteria = useSelector(state => state.authors.criteria);
   const dispatch = useDispatch();
 
   const [authors, setAuthors] = useState();
 
   useEffect(() => {
-    dispatch(Action.Author.AuthorsAction.getAuthors("abc"));
-  });
+    dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
+  }, [criteria]);
 
   useEffect(() => {
     if (data != null) {
@@ -72,15 +56,18 @@ function Icons() {
               <ReactTable
                 getTrProps={(state, rowInfo, column) => {
                   return {
-                      className: "cursor-pointer",
-                      onClick  : (e, handleOriginal) => {
-                          if ( rowInfo )
-                          {
-                              console.log(rowInfo.original)
-                          }
+                    className: "cursor-pointer",
+                    onClick: (e, handleOriginal) => {
+                      if (rowInfo) {
+                        dispatch(
+                          Action.Author.AuthorAction.openEditContactDialog(
+                            rowInfo.original
+                          )
+                        );
                       }
-                  }
-              }}
+                    }
+                  };
+                }}
                 data={authors}
                 columns={columns}
                 defaultPageSize={5}
@@ -89,6 +76,7 @@ function Icons() {
           </div>
         </Row>
       </Container>
+      <AuthorDialog />
     </>
   );
 }
