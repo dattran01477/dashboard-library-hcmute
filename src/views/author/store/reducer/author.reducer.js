@@ -7,8 +7,9 @@ const initialState = {
     props: {
       open: false
     },
-    data: null
-  }
+    data: {}
+  },
+  statusAction: null
 };
 
 export default function author(state = initialState, action) {
@@ -20,15 +21,13 @@ export default function author(state = initialState, action) {
       };
     case Action.AuthorAction.ADD_AUTHOR:
       return {
-        ...state,
-        author: action.data
+        ...state
       };
     case Action.AuthorAction.UPDATE_AUTHOR:
       return {
-        ...state,
-        author: action.data
+        ...state
       };
-    case Action.AuthorAction.OPEN_NEW_CONTACT_DIALOG: {
+    case Action.AuthorAction.OPEN_NEW_AUTHOR_DIALOG: {
       return {
         ...state,
         authorDialog: {
@@ -74,6 +73,13 @@ export default function author(state = initialState, action) {
           },
           data: null
         }
+      };
+    }
+    case Action.AuthorAction.SET_STATUS_ACTION: {
+      console.log(action.statusAction)
+      return {
+        ...state,
+        statusAction: action.statusAction
       };
     }
     default:

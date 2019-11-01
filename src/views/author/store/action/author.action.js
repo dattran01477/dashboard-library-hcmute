@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as contants from "../../../../constants";
 export const GET_AUTHOR = "GET_AUTHOR";
 export const DELETE_AUTHOR = "DELETE_AUTHOR";
 export const ADD_AUTHOR = "ADD_AUTHOR";
@@ -8,6 +9,7 @@ export const OPEN_NEW_AUTHOR_DIALOG = "OPEN_NEW_AUTHOR_DIALOG";
 export const CLOSE_NEW_AUTHOR_DIALOG = "CLOSE_NEW_AUTHOR_DIALOG";
 export const OPEN_EDIT_AUTHOR_DIALOG = "OPEN_EDIT_AUTHOR_DIALOG";
 export const CLOSE_EDIT_AUTHOR_DIALOG = "CLOSE_EDIT_AUTHOR_DIALOG";
+export const SET_STATUS_ACTION = "SET_STATUS_ACTION";
 
 export function getAuthorById(authorId) {
   const request = axios.get(
@@ -24,32 +26,75 @@ export function getAuthorById(authorId) {
 }
 
 export function addAuthor(author) {
-  const request = axios.post(
-    `https://libraryhcmute.herokuapp.com/app/authors`,
-    { author }
-  );
-
-  return dispatch =>
-    request.then(response =>
-      dispatch({
-        type: ADD_AUTHOR,
-        data: response.data
-      })
+  return (dispatch, getState) => {
+    const request = axios.post(
+      `https://libraryhcmute.herokuapp.com/app/authors`,
+       author 
     );
+    return request.then(response =>
+      Promise.all([
+        dispatch({
+          type: UPDATE_AUTHOR
+        })
+      ])
+        .then(() => {
+          dispatch(setStatusAction(contants.STATUS_ACTION_SUCCESSED));
+        })
+        .catch(err => {
+          dispatch(setStatusAction(contants.STATUS_ACTION_FAILED));
+        })
+    );
+  };
+}
+
+export function setStatusAction(status) {
+  return {
+    type: SET_STATUS_ACTION,
+    statusAction: status
+  };
 }
 
 export function updateAuthor(author) {
-  const request = axios.get(`https://libraryhcmute.herokuapp.com/app/authors`, {
-    author
-  });
-
-  return dispatch =>
-    request.then(response =>
-      dispatch({
-        type: UPDATE_AUTHOR,
-        data: response.data
-      })
+  return (dispatch, getState) => {
+    const request = axios.put(
+      `https://libraryhcmute.herokuapp.com/app/authors/${author.id}`,
+      author
     );
+    return request.then(response =>
+      Promise.all([
+        dispatch({
+          type: UPDATE_AUTHOR
+        })
+      ])
+        .then(() => {
+          dispatch(setStatusAction(contants.STATUS_ACTION_SUCCESSED));
+        })
+        .catch(err => {
+          dispatch(setStatusAction(contants.STATUS_ACTION_FAILED));
+        })
+    );
+  };
+}
+
+export function deleteAuthor(authorId) {
+  return (dispatch, getState) => {
+    const request = axios.delete(
+      `https://libraryhcmute.herokuapp.com/app/authors/${authorId}`
+    );
+    return request.then(response =>
+      Promise.all([
+        dispatch({
+          type: DELETE_AUTHOR
+        })
+      ])
+        .then(() => {
+          dispatch(setStatusAction(contants.STATUS_ACTION_SUCCESSED));
+        })
+        .catch(err => {
+          dispatch(setStatusAction(contants.STATUS_ACTION_FAILED));
+        })
+    );
+  };
 }
 
 export function openNewContactDialog() {

@@ -2,9 +2,10 @@ import axios from "axios";
 export const GET_AUTHORS = "GET_AUTHORS";
 export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 
+
 export function getAuthors(criteria) {
   const request = axios.get("https://libraryhcmute.herokuapp.com/app/authors", {
-    criteria
+    params:criteria
   });
 
   return dispatch =>
@@ -22,3 +23,5 @@ export function changeCriteria(criteria) {
     criteria: criteria
   };
 }
+
+

@@ -6,7 +6,7 @@ const initialState = {
     pageIndex: 0,
     pageSize: 25,
     query: "",
-    sortDirection: "ASC",
+    sortDirection: "DESC",
     sortField: ""
   }
 };
