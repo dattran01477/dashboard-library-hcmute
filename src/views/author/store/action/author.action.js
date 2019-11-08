@@ -1,4 +1,5 @@
 import axios from "axios";
+import {base_url} from "../../../../constants"
 import * as contants from "../../../../constants";
 export const GET_AUTHOR = "GET_AUTHOR";
 export const DELETE_AUTHOR = "DELETE_AUTHOR";
@@ -13,7 +14,7 @@ export const SET_STATUS_ACTION = "SET_STATUS_ACTION";
 
 export function getAuthorById(authorId) {
   const request = axios.get(
-    `https://libraryhcmute.herokuapp.com/app/authors/${authorId}`
+    `${base_url}/app/authors/${authorId}`
   );
 
   return dispatch =>
@@ -28,13 +29,13 @@ export function getAuthorById(authorId) {
 export function addAuthor(author) {
   return (dispatch, getState) => {
     const request = axios.post(
-      `https://libraryhcmute.herokuapp.com/app/authors`,
+      `${base_url}/app/authors`,
        author 
     );
     return request.then(response =>
       Promise.all([
         dispatch({
-          type: UPDATE_AUTHOR
+          type: ADD_AUTHOR
         })
       ])
         .then(() => {
@@ -57,7 +58,7 @@ export function setStatusAction(status) {
 export function updateAuthor(author) {
   return (dispatch, getState) => {
     const request = axios.put(
-      `https://libraryhcmute.herokuapp.com/app/authors/${author.id}`,
+      `${base_url}/app/authors/${author.id}`,
       author
     );
     return request.then(response =>
@@ -79,7 +80,7 @@ export function updateAuthor(author) {
 export function deleteAuthor(authorId) {
   return (dispatch, getState) => {
     const request = axios.delete(
-      `https://libraryhcmute.herokuapp.com/app/authors/${authorId}`
+      `${base_url}/app/authors/${authorId}`
     );
     return request.then(response =>
       Promise.all([

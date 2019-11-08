@@ -26,7 +26,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { createStore, compose, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import rootReducer from "./views/author/store";
+import rootReducer from "./store/reducers";
 import thunk from "redux-thunk";
 import "./index.css"
 

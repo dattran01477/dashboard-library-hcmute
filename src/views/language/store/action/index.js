@@ -1,4 +1,4 @@
-import * as LanguageAction from "./Language.Action";
-import * as LanguagesAction from "./Languages.Action";
+import * as LanguageAction from "./language.action";
+import * as LanguagesAction from "./languages.action";
 
 export { LanguageAction, LanguagesAction };

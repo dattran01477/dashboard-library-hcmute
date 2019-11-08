@@ -10,17 +10,21 @@ import { useDispatch, useSelector } from "react-redux";
 import useForm from "../../@core/hooks/useForm";
 import * as Action from "../../store/action";
 
-const newAuthorState = {
+const newCategoryState = {
   name: "",
   createDate: new Date(),
-  updateDate: new Date()
+  updateDate: new Date(),
+  bookTotal: 0,
+  parent: null,
+  status: "ACTIVE",
+  rank: 0
 };
 
-function AuthorDialog() {
-  const dialog = useSelector(state => state.author.authorDialog);
+function CategoryDialog() {
+  const dialog = useSelector(state => state.category.categoryDialog);
   const dispatch = useDispatch();
   // const author = useState({});
-  const { form, handleChange, setForm } = useForm(newAuthorState);
+  const { form, handleChange, setForm } = useForm(newCategoryState);
 
   const initDialog = useCallback(() => {
     /**
@@ -35,7 +39,7 @@ function AuthorDialog() {
      */
     if (dialog.type === "new") {
       setForm({
-        ...newAuthorState,
+        ...newCategoryState,
         ...dialog.data
       });
     }
@@ -52,17 +56,17 @@ function AuthorDialog() {
 
   function closeDialog() {
     dialog.type === "edit"
-      ? dispatch(Action.Author.AuthorAction.closeEditContactDialog())
-      : dispatch(Action.Author.AuthorAction.closeNewContactDialog());
+      ? dispatch(Action.Category.CategoryAction.closeEditCategoryDialog())
+      : dispatch(Action.Category.CategoryAction.closeNewCategoryDialog());
   }
 
   function onSubmit(event) {
     event.preventDefault();
 
     if (dialog.type === "new") {
-      dispatch(Action.Author.AuthorAction.addAuthor(form));
+      dispatch(Action.Category.CategoryAction.addCategory(form));
     } else {
-      dispatch(Action.Author.AuthorAction.updateAuthor(form));
+      dispatch(Action.Category.CategoryAction.updateCategory(form));
     }
     closeDialog();
   }
@@ -77,12 +81,12 @@ function AuthorDialog() {
       maxWidth="xs"
     >
       <DialogTitle id="simple-dialog-title">
-        {dialog.type === "edit" ? "Chỉnh Sửa Tác Giả" : "Tạo Mới Tác Giả"}
+        {dialog.type === "edit" ? "Chỉnh Sửa Danh Mục" : "Tạo Mới Danh Mục"}
       </DialogTitle>
       <div className="flex px-20">
         <TextField
           className="mb-24"
-          label="Tên Tác Giả"
+          label="Tên Danh Mục"
           id="name"
           name="name"
           value={form.name}
@@ -106,4 +110,4 @@ function AuthorDialog() {
   );
 }
 
-export default AuthorDialog;
+export default CategoryDialog;

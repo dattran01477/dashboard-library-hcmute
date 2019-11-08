@@ -1,4 +1,4 @@
-import * as CategoryAction from "./Category.Action";
-import * as CategoriesAction from "./Categories.Action";
+import * as CategoryAction from "./category.action";
+import * as CategoriesAction from "./categories.action";
 
 export { CategoryAction, CategoriesAction };

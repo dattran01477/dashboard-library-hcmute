@@ -6,43 +6,51 @@ import ReactTable from "react-table";
 import { Card, CardHeader, Container, Row } from "reactstrap";
 import * as Action from "../../store/action";
 import DateFormat from "../../ultils/datetime";
-import AuthorDialog from "./AuthorsDialog";
+import LanguageDialog from "./LanguageDialog.jsx";
 import * as constants from "../../constants";
 
-function Icons() {
-  const data = useSelector(state => state.authors.data);
-  const criteria = useSelector(state => state.authors.criteria);
-  const statusAction = useSelector(state => state.author.statusAction);
+function LanguageList() {
+  const data = useSelector(state => state.languages.data);
+  const criteria = useSelector(state => state.languages.criteria);
+  const statusAction = useSelector(state => state.category.statusAction);
   const dispatch = useDispatch();
 
-  const [authors, setAuthors] = useState();
+  const [languages, setLanguages] = useState();
   const [pagging, setPagging] = useState({});
 
   const columns = [
     {
-      Header: "Tên Tác Giả",
-      accessor: "name"
+      Header: "Tên Ngôn Ngữ",
+      accessor: "name",
+    },
+    {
+      Header: "Mã Ngôn Ngữ",
+      accessor: "code",
+      className: "flex justify-center"
     },
     {
       Header: "Ngày Tạo",
-      accessor: "createDate",
+      bookTotal: "createDate",
+      className: "flex justify-center",
       Cell: row => <DateFormat date={row.value} />
     },
     {
       Header: "Ngày Chỉnh Sửa",
-      accessor: "updateDate",
+      rank: "updateDate",
+      className: "flex  justify-center",
       Cell: row => <DateFormat date={row.value} />
     },
     {
       Header: "",
       width: 128,
+      className: "flex  justify-center",
       Cell: row => (
         <div className="flex items-center">
           <IconButton
             onClick={ev => {
               ev.stopPropagation();
               dispatch(
-                Action.Author.AuthorAction.deleteAuthor(row.original.id)
+                Action.Language.LanguageAction.deleteLanguage(row.original.id)
               );
             }}
           >
@@ -54,30 +62,30 @@ function Icons() {
   ];
 
   useEffect(() => {
-    dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
+    dispatch(Action.Language.LanguagesAction.getLanguages(criteria));
   }, [criteria]);
 
   useEffect(() => {
     if (data != null) {
-      setAuthors(data.content);
+      setLanguages(data.content);
     }
   }, [dispatch, data]);
 
   useEffect(() => {
     if (statusAction === constants.STATUS_ACTION_SUCCESSED) {
-      dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
-      dispatch(Action.Author.AuthorAction.setStatusAction(null));
+      dispatch(Action.Language.LanguagesAction.getLanguages(criteria));
+      dispatch(Action.Language.LanguageAction.setStatusAction(null));
     }
     if (statusAction === constants.STATUS_ACTION_FAILED) {
-      console.log("author action failed!");
-      dispatch(Action.Author.AuthorAction.setStatusAction(null));
+      console.log("languages action failed!");
+      dispatch(Action.Language.LanguageAction.setStatusAction(null));
     }
   }, [statusAction]);
 
   useEffect(() => {
     pagging &&
       dispatch(
-        Action.Author.AuthorsAction.changeCriteria({
+        Action.Language.LanguagesAction.changeCriteria({
           ...criteria,
           pageIndex: pagging.pageIndex,
           pageSize: pagging.pageSize
@@ -94,7 +102,7 @@ function Icons() {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Card tables</h3>
+                <h3 className="mb-0">Quản Lý Ngôn Ngữ</h3>
               </CardHeader>
               {/* content */}
               <ReactTable
@@ -104,7 +112,7 @@ function Icons() {
                     onClick: (e, handleOriginal) => {
                       if (rowInfo) {
                         dispatch(
-                          Action.Author.AuthorAction.openEditContactDialog(
+                          Action.Language.LanguageAction.openEditLanguageDialog(
                             rowInfo.original
                           )
                         );
@@ -112,7 +120,7 @@ function Icons() {
                     }
                   };
                 }}
-                data={authors}
+                data={languages}
                 columns={columns}
                 defaultPageSize={5}
                 pages={data.totalPages}
@@ -133,15 +141,15 @@ function Icons() {
           color="primary"
           aria-label="add"
           onClick={ev =>
-            dispatch(Action.Author.AuthorAction.openNewContactDialog())
+            dispatch(Action.Language.LanguageAction.openNewLanguageDialog())
           }
         >
           <Icon>person_add</Icon>
         </Fab>
       </Container>
-      <AuthorDialog />
+      <LanguageDialog />
     </>
   );
 }
 
-export default Icons;
+export default LanguageList;
