@@ -4,7 +4,7 @@ export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 
 
 export function getAuthors(criteria) {
-  const request = axios.get("https://libraryhcmute.herokuapp.com/app/authors", {
+  const request = axios.get("http://localhost:8080/app/authors", {
     params:criteria
   });
 

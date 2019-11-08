@@ -8,6 +8,7 @@ import * as Action from "../../store/action";
 import DateFormat from "../../ultils/datetime";
 import AuthorDialog from "./AuthorsDialog";
 import * as constants from "../../constants"
+import SockJS from "sockjs-client"
 
 
 function Icons() {
@@ -15,6 +16,9 @@ function Icons() {
   const criteria = useSelector(state => state.authors.criteria);
   const statusAction = useSelector(state => state.author.statusAction)
   const dispatch = useDispatch();
+
+  const sock = new WebSocket('ws://localhost:8080/app/authors/newAuthor');
+ 
 
   const [authors, setAuthors] = useState();
   const [pagging, setPagging] = useState({});
@@ -54,13 +58,25 @@ function Icons() {
 
 
   useEffect(() => {
-    dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
+    // dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
+    sock.onopen=()=>{
+      console.log('connected');
+    }
+
+    this.ws.onmessage = evt => {
+      // listen to data sent from the websocket server
+      const message = JSON.parse(evt.data)
+      this.setState({dataFromServer: message})
+      console.log(message)
+    }
   }, [criteria]);
 
   useEffect(() => {
     if (data != null) {
       setAuthors(data.content);
     }
+
+   
   }, [dispatch, data]);
 
 

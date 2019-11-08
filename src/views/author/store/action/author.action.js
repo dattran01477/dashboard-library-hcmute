@@ -29,7 +29,7 @@ export function addAuthor(author) {
   return (dispatch, getState) => {
     const request = axios.post(
       `https://libraryhcmute.herokuapp.com/app/authors`,
-       author 
+      author
     );
     return request.then(response =>
       Promise.all([
