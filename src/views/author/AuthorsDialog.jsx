@@ -19,6 +19,7 @@ const newAuthorState = {
 function AuthorDialog() {
   const dialog = useSelector(state => state.author.authorDialog);
   const dispatch = useDispatch();
+  let stompClient = useSelector(state => state.authors.stompClient);
   // const author = useState({});
   const { form, handleChange, setForm } = useForm(newAuthorState);
 
@@ -50,6 +51,14 @@ function AuthorDialog() {
     }
   }, [dialog.props.open, initDialog]);
 
+  function onclickSendData(data) {
+    stompClient.send(
+      "/apps/addNew",
+      {},
+      JSON.stringify(data)
+    );
+  }
+
   function closeDialog() {
     dialog.type === "edit"
       ? dispatch(Action.Author.AuthorAction.closeEditContactDialog())
@@ -60,7 +69,8 @@ function AuthorDialog() {
     event.preventDefault();
 
     if (dialog.type === "new") {
-      dispatch(Action.Author.AuthorAction.addAuthor(form));
+      // dispatch(Action.Author.AuthorAction.addAuthor(form));
+      onclickSendData(form);
     } else {
       dispatch(Action.Author.AuthorAction.updateAuthor(form));
     }

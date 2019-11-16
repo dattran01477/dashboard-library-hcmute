@@ -20,6 +20,7 @@ import CategoryList from "views/category/CategoryList.jsx";
 import Login from "views/examples/Login.jsx";
 import Register from "views/examples/Register.jsx";
 import LanguageList from "views/language/LanguageList.jsx";
+import BorringList from "views/borrowing-card/Borrowing.jsx";
 
 var routes = [
   {
@@ -41,6 +42,13 @@ var routes = [
     name: "Language",
     icon: "ni ni-planet text-blue",
     component: LanguageList,
+    layout: "/admin"
+  },
+  {
+    path: "/borrowings",
+    name: "Danh Sách Mượn",
+    icon: "ni ni-planet text-blue",
+    component: BorringList,
     layout: "/admin"
   },
   {

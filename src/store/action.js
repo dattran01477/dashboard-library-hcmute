@@ -4,5 +4,6 @@ import * as Category from "../views/category/store/action";
 import * as Language from "../views/language/store/action";
 import * as Publisher from "../views/publisher/store/action";
 import * as User from "../views/user/store/action";
+import * as Borrowing from "../views/borrowing-card/store/action";
 
-export { Author, Book, Category, Language, Publisher, User };
+export { Author, Book, Category, Language, Publisher, User, Borrowing};

@@ -7,28 +7,21 @@ const initialState = {
     pageSize: 25,
     query: "",
     sortDirection: "DESC",
-    sortField: ""
-  },
-  stompClient: null
+    sortField: "create_date"
+  }
 };
 
-export default function authors(state = initialState, action) {
+export default function borrowings(state = initialState, action) {
   switch (action.type) {
-    case Action.AuthorsAction.GET_AUTHORS:
-      console.log(action.data);
+    case Action.BorrowingsAction.GET_BORROWINGS:
       return {
         ...state,
         data: action.data
       };
-    case Action.AuthorsAction.CHANGE_CRITERIA:
+    case Action.BorrowingsAction.CHANGE_CRITERIA:
       return {
         ...state,
         criteria: action.criteria
-      };
-    case Action.AuthorsAction.SET_STOMP_CLIENT:
-      return {
-        ...state,
-        stompClient: action.stomp
       };
     default:
       return state;

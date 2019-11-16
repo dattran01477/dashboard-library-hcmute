@@ -6,28 +6,36 @@ import ReactTable from "react-table";
 import { Card, CardHeader, Container, Row } from "reactstrap";
 import * as Action from "../../store/action";
 import DateFormat from "../../ultils/datetime";
-import AuthorDialog from "./AuthorsDialog";
+import BorrowingDialog from "./BorrowingDialog";
 import * as constants from "../../constants";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-function Icons() {
-  const data = useSelector(state => state.authors.data);
-  const criteria = useSelector(state => state.authors.criteria);
-  const statusAction = useSelector(state => state.author.statusAction);
-  let stompClient = useSelector(state => state.authors.stompClient);
+function Borrowing() {
+  const data = useSelector(state => state.borrowings.data);
+  const criteria = useSelector(state => state.borrowings.criteria);
+  const statusAction = useSelector(state => state.borrowing.statusAction);
+  let stompClient = useSelector(state => state.borrowings.stompClient);
   const dispatch = useDispatch();
 
-  const [authors, setAuthors] = useState();
+  const [borrowings, setBorrowings] = useState();
   const [pagging, setPagging] = useState({});
 
   const columns = [
     {
-      Header: "Tên Tác Giả",
-      accessor: "name"
+      Header: "Mã Mượn",
+      accessor: "id"
     },
     {
-      Header: "Ngày Tạo",
+      Header: "Trạng Thái",
+      accessor: "status"
+    },
+    {
+      Header: "Type",
+      accessor: "type"
+    },
+    {
+      Header: "Ngày Mượn Sách",
       accessor: "createDate",
       Cell: row => <DateFormat date={row.value} />
     },
@@ -45,7 +53,9 @@ function Icons() {
             onClick={ev => {
               ev.stopPropagation();
               dispatch(
-                Action.Author.AuthorAction.deleteAuthor(row.original.id)
+                Action.Borrowing.BorrowingAction.deleteBorrowing(
+                  row.original.id
+                )
               );
             }}
           >
@@ -58,10 +68,7 @@ function Icons() {
 
   function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe(
-      "/topic/borrowing-list",
-      onMessageReceived
-    );
+    stompClient.subscribe("/topic/borrowing-list", onMessageReceived);
   }
 
   function onError(error) {
@@ -70,43 +77,41 @@ function Icons() {
 
   function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-    let abc={data:{...message}};
-    console.log(abc);
-    // dispatch({type:Action.Author.AuthorsAction.GET_AUTHORS,data:{...message}})
+    dispatch({type:Action.Borrowing.BorrowingsAction.GET_BORROWINGS,data:{...message}})
   }
 
   useEffect(() => {
     var socket = new SockJS("http://localhost:8080/app/ws");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, onConnected, onError);
-    dispatch(Action.Author.AuthorsAction.setStompClient(stompClient));
-  },[]);
+    dispatch(Action.Borrowing.BorrowingsAction.setStompClient(stompClient));
+  }, []);
 
   useEffect(() => {
-    dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
+    dispatch(Action.Borrowing.BorrowingsAction.getBorrowings(criteria));
   }, [criteria]);
 
   useEffect(() => {
     if (data != null) {
-      setAuthors(data.content);
+      setBorrowings(data.content);
     }
   }, [dispatch, data]);
 
   useEffect(() => {
     if (statusAction === constants.STATUS_ACTION_SUCCESSED) {
-      dispatch(Action.Author.AuthorsAction.getAuthors(criteria));
-      dispatch(Action.Author.AuthorAction.setStatusAction(null));
+      dispatch(Action.Borrowing.BorrowingsAction.getBorrowings(criteria));
+      dispatch(Action.Borrowing.BorrowingAction.setStatusAction(null));
     }
     if (statusAction === constants.STATUS_ACTION_FAILED) {
-      console.log("author action failed!");
-      dispatch(Action.Author.AuthorAction.setStatusAction(null));
+      console.log("borrowing action failed!");
+      dispatch(Action.Borrowing.BorrowingAction.setStatusAction(null));
     }
   }, [statusAction]);
 
   useEffect(() => {
     pagging &&
       dispatch(
-        Action.Author.AuthorsAction.changeCriteria({
+        Action.Borrowing.BorrowingsAction.changeCriteria({
           ...criteria,
           pageIndex: pagging.pageIndex,
           pageSize: pagging.pageSize
@@ -133,7 +138,7 @@ function Icons() {
                     onClick: (e, handleOriginal) => {
                       if (rowInfo) {
                         dispatch(
-                          Action.Author.AuthorAction.openEditContactDialog(
+                          Action.Borrowing.BorrowingAction.openEditContactDialog(
                             rowInfo.original
                           )
                         );
@@ -141,7 +146,7 @@ function Icons() {
                     }
                   };
                 }}
-                data={authors}
+                data={borrowings}
                 columns={columns}
                 defaultPageSize={5}
                 pages={data.totalPages}
@@ -157,18 +162,20 @@ function Icons() {
             </Card>
           </div>
         </Row>
-       
+
         <Fab
           color="primary"
           aria-label="add"
-          onClick={ev =>  dispatch(Action.Author.AuthorAction.openNewContactDialog())}
+          onClick={ev =>
+            dispatch(Action.Borrowing.BorrowingAction.openNewContactDialog())
+          }
         >
           <Icon>person_add</Icon>
         </Fab>
       </Container>
-      <AuthorDialog />
+      <BorrowingDialog />
     </>
   );
 }
 
-export default Icons;
+export default Borrowing;
