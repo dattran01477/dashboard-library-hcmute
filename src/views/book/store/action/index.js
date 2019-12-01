@@ -1,4 +1,4 @@
-import * as BookAction from "./Book.Action";
-import * as BooksAction from "./Books.Action";
+import * as BookAction from "./book.action";
+import * as BooksAction from "./books.action";
 
 export { BookAction, BooksAction };

@@ -21,6 +21,7 @@ import Login from "views/examples/Login.jsx";
 import Register from "views/examples/Register.jsx";
 import LanguageList from "views/language/LanguageList.jsx";
 import BorringList from "views/borrowing-card/Borrowing.jsx";
+import bookconfig from "views/book/book.config.js";
 
 var routes = [
   {
@@ -28,6 +29,13 @@ var routes = [
     name: "Authors",
     icon: "ni ni-planet text-blue",
     component: Authors,
+    layout: "/admin"
+  },
+  {
+    path: "/book",
+    name: "Books",
+    icon: "ni ni-planet text-blue",
+    component: bookconfig,
     layout: "/admin"
   },
   {
