@@ -1,5 +1,5 @@
 import axios from "axios";
-import {base_url} from "../../../../constants"
+import { base_url } from "../../../../constants";
 import * as contants from "../../../../constants";
 export const GET_CATEGORY = "GET_CATEGORY";
 export const SAVE_CATEGORY = "SAVE_CATEGORY";
@@ -12,11 +12,13 @@ export const CLOSE_NEW_CATEGORY_DIALOG = "CLOSE_NEW_CATEGORY_DIALOG";
 export const OPEN_EDIT_CATEGORY_DIALOG = "OPEN_EDIT_CATEGORY_DIALOG";
 export const CLOSE_EDIT_CATEGORY_DIALOG = "CLOSE_EDIT_CATEGORY_DIALOG";
 export const SET_STATUS_ACTION = "SET_STATUS_ACTION";
+export const GET_CATEGORIES = "GET_CATEGORIES";
+export const GET_AUTHORS = "GET_AUTHORS";
+export const GET_LANGUAGES = "GET_LANGUAGES";
+export const GET_PUBLISHER = "GET_PUBLISHER";
 
 export function getCategoryById(categoryId) {
-  const request = axios.get(
-    `${base_url}/app/categories/${categoryId}`
-  );
+  const request = axios.get(`${base_url}/app/categories/${categoryId}`);
 
   return dispatch =>
     request.then(response =>
@@ -29,10 +31,7 @@ export function getCategoryById(categoryId) {
 
 export function addCategory(category) {
   return (dispatch, getState) => {
-    const request = axios.post(
-      `${base_url}/app/categories`,
-      category
-    );
+    const request = axios.post(`${base_url}/app/categories`, category);
     return request.then(response =>
       Promise.all([
         dispatch({
@@ -80,9 +79,7 @@ export function updateCategory(category) {
 
 export function deleteCategory(categoryId) {
   return (dispatch, getState) => {
-    const request = axios.delete(
-      `${base_url}/app/categories/${categoryId}`
-    );
+    const request = axios.delete(`${base_url}/app/categories/${categoryId}`);
     return request.then(response =>
       Promise.all([
         dispatch({
@@ -122,4 +119,28 @@ export function closeEditCategoryDialog() {
   return {
     type: CLOSE_EDIT_CATEGORY_DIALOG
   };
+}
+
+export function getAuthors(onSuccessGetAuthors) {
+  const request = axios.get(`${base_url}/app/authors`);
+
+  request.then(response => onSuccessGetAuthors(response.data));
+}
+
+export function getCategories(onSuccessGetCategories) {
+  const request = axios.get(`${base_url}/app/categories`);
+
+  request.then(response => onSuccessGetCategories(response.data));
+}
+
+export function getLanguages(onSuccessGetLanguages) {
+  const request = axios.get(`${base_url}/app/languages`);
+
+  request.then(response => onSuccessGetLanguages(response.data));
+}
+
+export function getPublisher(onSuccessGetPublisher) {
+  const request = axios.get(`${base_url}/app/publishers`);
+
+  request.then(response => onSuccessGetPublisher(response.data));
 }

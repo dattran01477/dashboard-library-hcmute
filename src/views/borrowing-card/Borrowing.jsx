@@ -1,7 +1,7 @@
 import Header from "components/Headers/Header.jsx";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Icon, Fab } from "@material-ui/core";
+import { IconButton, Icon, Fab, Chip } from "@material-ui/core";
 import ReactTable from "react-table";
 import { Card, CardHeader, Container, Row } from "reactstrap";
 import * as Action from "../../store/action";
@@ -23,46 +23,42 @@ function Borrowing() {
 
   const columns = [
     {
-      Header: "Mã Mượn",
-      accessor: "id"
+      Header: "Người Mượn",
+      accessor: "user_id"
     },
     {
       Header: "Trạng Thái",
-      accessor: "status"
+      accessor: "status",
+      className: "flex justify-center",
+      Cell: row => {
+        if (row.value === "Active") {
+          return <Chip label="Đã Mượn" color="primary" />;
+        }
+        if (row.value === "Waiting") {
+          return <Chip label="Đạng Đợi" color="inherit" />;
+        }
+        if (row.value === "Cancel") {
+          return <Chip label="Đã Hủy" color="secondary" />;
+        }
+        if (row.value === "Returned") {
+          return <Chip label="Đã Trả" color="default" />;
+        }
+        return null;
+      }
     },
     {
-      Header: "Type",
+      Header: "Loại",
       accessor: "type"
     },
     {
       Header: "Ngày Mượn Sách",
-      accessor: "createDate",
+      accessor: "create_date",
       Cell: row => <DateFormat date={row.value} />
     },
     {
       Header: "Ngày Chỉnh Sửa",
-      accessor: "updateDate",
+      accessor: "borrow_date",
       Cell: row => <DateFormat date={row.value} />
-    },
-    {
-      Header: "",
-      width: 128,
-      Cell: row => (
-        <div className="flex items-center">
-          <IconButton
-            onClick={ev => {
-              ev.stopPropagation();
-              dispatch(
-                Action.Borrowing.BorrowingAction.deleteBorrowing(
-                  row.original.id
-                )
-              );
-            }}
-          >
-            <Icon>delete</Icon>
-          </IconButton>
-        </div>
-      )
     }
   ];
 
@@ -77,7 +73,10 @@ function Borrowing() {
 
   function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-    dispatch({type:Action.Borrowing.BorrowingsAction.GET_BORROWINGS,data:{...message}})
+    dispatch({
+      type: Action.Borrowing.BorrowingsAction.GET_BORROWINGS,
+      data: { ...message }
+    });
   }
 
   useEffect(() => {
@@ -138,7 +137,7 @@ function Borrowing() {
                     onClick: (e, handleOriginal) => {
                       if (rowInfo) {
                         dispatch(
-                          Action.Borrowing.BorrowingAction.openEditContactDialog(
+                          Action.Borrowing.BorrowingAction.openEditBorrowingDialog(
                             rowInfo.original
                           )
                         );
@@ -149,14 +148,6 @@ function Borrowing() {
                 data={borrowings}
                 columns={columns}
                 defaultPageSize={5}
-                pages={data.totalPages}
-                manual
-                onFetchData={(state, instance) => {
-                  setPagging({
-                    pageIndex: state.page,
-                    pageSize: state.pageSize
-                  });
-                }}
                 noDataText="No contacts found"
               />
             </Card>
@@ -167,7 +158,7 @@ function Borrowing() {
           color="primary"
           aria-label="add"
           onClick={ev =>
-            dispatch(Action.Borrowing.BorrowingAction.openNewContactDialog())
+            dispatch(Action.Borrowing.BorrowingAction.openNewBorrowingDialog())
           }
         >
           <Icon>person_add</Icon>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { base_url } from "../../../../constants";
 import * as contants from "../../../../constants";
+import qs from "querystring"
 export const GET_BORROWING = "GET_BORROWING";
 export const DELETE_BORROWING = "DELETE_BORROWING";
 export const ADD_BORROWING = "ADD_BORROWING";
@@ -11,6 +12,7 @@ export const CLOSE_NEW_BORROWING_DIALOG = "CLOSE_NEW_BORROWING_DIALOG";
 export const OPEN_EDIT_BORROWING_DIALOG = "OPEN_EDIT_BORROWING_DIALOG";
 export const CLOSE_EDIT_BORROWING_DIALOG = "CLOSE_EDIT_BORROWING_DIALOG";
 export const SET_STATUS_ACTION = "SET_STATUS_ACTION";
+
 
 
 export function getBorrowingById(borrowingCardId) {
@@ -53,7 +55,20 @@ export function setStatusAction(status) {
 
 export function updateBorrowing(borrowingCard) {
   return (dispatch, getState) => {
-    const request = axios.put(`${base_url}/app/borrowing-card/${borrowingCard.id}`, borrowingCard);
+    const config = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+      }
+    };
+  
+    const request = axios.put(
+      `${base_url}/api/borrowings/${borrowingCard._id}`,
+      qs.stringify(borrowingCard),
+      config
+    );
+  
     return request.then(response =>
       Promise.all([
         dispatch({
@@ -89,26 +104,26 @@ export function deleteBorrowing(borrowingCardId) {
   };
 }
 
-export function openNewContactDialog() {
+export function openNewBorrowingDialog() {
   return {
     type: OPEN_NEW_BORROWING_DIALOG
   };
 }
 
-export function closeNewContactDialog() {
+export function closeNewBorrowingDialog() {
   return {
     type: CLOSE_NEW_BORROWING_DIALOG
   };
 }
 
-export function openEditContactDialog(data) {
+export function openEditBorrowingDialog(data) {
   return {
     type: OPEN_EDIT_BORROWING_DIALOG,
     data
   };
 }
 
-export function closeEditContactDialog() {
+export function closeEditBorrowingDialog() {
   return {
     type: CLOSE_EDIT_BORROWING_DIALOG
   };
