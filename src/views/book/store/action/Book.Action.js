@@ -16,83 +16,12 @@ export const GET_CATEGORIES = "GET_CATEGORIES";
 export const GET_AUTHORS = "GET_AUTHORS";
 export const GET_LANGUAGES = "GET_LANGUAGES";
 export const GET_PUBLISHER = "GET_PUBLISHER";
-
-export function getCategoryById(categoryId) {
-  const request = axios.get(`${base_url}/app/categories/${categoryId}`);
-
-  return dispatch =>
-    request.then(response =>
-      dispatch({
-        type: GET_CATEGORY,
-        data: response.data
-      })
-    );
-}
-
-export function addCategory(category) {
-  return (dispatch, getState) => {
-    const request = axios.post(`${base_url}/app/categories`, category);
-    return request.then(response =>
-      Promise.all([
-        dispatch({
-          type: ADD_CATEGORY
-        })
-      ])
-        .then(() => {
-          dispatch(setStatusAction(contants.STATUS_ACTION_SUCCESSED));
-        })
-        .catch(err => {
-          dispatch(setStatusAction(contants.STATUS_ACTION_FAILED));
-        })
-    );
-  };
-}
+export const STATUS = ["Publish", "Private", "Waiting", "Cancel"];
 
 export function setStatusAction(status) {
   return {
     type: SET_STATUS_ACTION,
     statusAction: status
-  };
-}
-
-export function updateCategory(category) {
-  return (dispatch, getState) => {
-    const request = axios.put(
-      `${base_url}/app/categories/${category.id}`,
-      category
-    );
-    return request.then(response =>
-      Promise.all([
-        dispatch({
-          type: UPDATE_CATEGORY
-        })
-      ])
-        .then(() => {
-          dispatch(setStatusAction(contants.STATUS_ACTION_SUCCESSED));
-        })
-        .catch(err => {
-          dispatch(setStatusAction(contants.STATUS_ACTION_FAILED));
-        })
-    );
-  };
-}
-
-export function deleteCategory(categoryId) {
-  return (dispatch, getState) => {
-    const request = axios.delete(`${base_url}/app/categories/${categoryId}`);
-    return request.then(response =>
-      Promise.all([
-        dispatch({
-          type: DELETE_CATEGORY
-        })
-      ])
-        .then(() => {
-          dispatch(setStatusAction(contants.STATUS_ACTION_SUCCESSED));
-        })
-        .catch(err => {
-          dispatch(setStatusAction(contants.STATUS_ACTION_FAILED));
-        })
-    );
   };
 }
 
@@ -143,4 +72,12 @@ export function getPublisher(onSuccessGetPublisher) {
   const request = axios.get(`${base_url}/app/publishers`);
 
   request.then(response => onSuccessGetPublisher(response.data));
+}
+
+export function saveBook(book, callBackSuccess, callBackFail) {
+  const request = axios.post(`${base_url}/app/books`, book);
+
+  request
+    .then(response => callBackSuccess(response.data))
+    .catch(err => callBackFail(err));
 }

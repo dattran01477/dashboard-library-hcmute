@@ -13,6 +13,12 @@ import {
   TextField,
   Typography
 } from "@material-ui/core";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React, { useState, useEffect, useCallback } from "react";
@@ -34,13 +40,13 @@ const newBook = {
   numberPages: 0,
   pageSize: "",
   publisher: {},
-  releasedDate: "",
+  releasedDate: new Date(),
   releasedNumber: 0,
   releasedTime: 0,
   reprint: 0,
   shortDescription: "",
   status: "publish",
-  thumbnail: ""
+  thumbnail: "https://www.grocio.in/images/No_image_available.jpg"
 };
 
 function TabPanel(props) {
@@ -130,6 +136,18 @@ function Book(props) {
     setLanguages(data.content);
   }
 
+  function handleSubmit() {
+    Action.Book.saveBook(form, successCallBack, failCallBack);
+  }
+
+  function successCallBack(data) {
+    this.props.history.push("/app/book")
+  }
+
+  function failCallBack(err) {
+    console.log("failed")
+  }
+
   return (
     <div>
       <div className="flex flex-row my-4">
@@ -141,6 +159,7 @@ function Book(props) {
             className="mx-2 bg-blue-300"
             variant="contained"
             color="primary"
+            onClick={handleSubmit}
           >
             Save
           </Button>
@@ -207,18 +226,30 @@ function Book(props) {
 
                 {/* start status and book number */}
                 <div className="flex flex-row m-4">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={form.status === "publish" ? true : false}
-                        value={form.status}
-                        name="status"
-                        onChange={handleChange}
-                      />
-                    }
-                    className="w-5/12 mx-2 w-full"
-                    label="Công khai"
-                  />
+                  <FormControl
+                    className={classes.formControl}
+                    variant="outlined"
+                    fullWidth
+                    className="mx-2 w-5/12"
+                  >
+                    <InputLabel id="demo-simple-select-label">
+                      Trạng thái
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="status"
+                      onChange={handleChange}
+                      value={form.status}
+                    >
+                      {Action.Book.STATUS.map(item => (
+                        <MenuItem value={item} key={item}>
+                          {item}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
                   <FormControl
                     className={(classes.margin, "mx-2 w-5/12")}
                     fullWidth
@@ -227,6 +258,7 @@ function Book(props) {
                       id="outlined-textarea"
                       label="Số lượng sách"
                       type="number"
+                      name="amountBook"
                       value={form.amountBook}
                       onChange={handleChange}
                       placeholder="Tổng số sách"
@@ -251,6 +283,13 @@ function Book(props) {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       name="categories"
+                      value={form.categories[0]}
+                      renderValue={item => item.name}
+                      onChange={e => {
+                        let formTmp = { ...form };
+                        formTmp["categories"] = [{...e.target.value}];
+                        setForm({ ...formTmp });
+                      }}
                     >
                       {categories.map(item => (
                         <MenuItem value={item} key={item.id}>
@@ -466,7 +505,6 @@ function Book(props) {
                       label="Lần in"
                       placeholder="Placeholder"
                       type="number"
-                      multiline
                       name="reprint"
                       value={form.reprint}
                       onChange={handleChange}
@@ -481,28 +519,33 @@ function Book(props) {
                       id="outlined-textarea"
                       label="Lần tái bản"
                       name="releasedTime"
-                      valur={form.releasedTime}
+                      value={form.releasedTime}
                       onChange={handleChange}
                       placeholder="Placeholder"
-                      multiline
+                      type="number"
                       variant="outlined"
                     />
                   </FormControl>
                 </div>
 
                 <div className="flex flex-row m-4">
-                  <FormControl
-                    className={(classes.margin, "mx-2 w-5/12")}
-                    fullWidth
-                  >
-                    <TextField
-                      id="outlined-textarea"
-                      label="Ngày tái bản"
-                      placeholder="Placeholder"
-                      type="number"
-                      multiline
-                      variant="outlined"
-                    />
+                  <FormControl className={(classes.margin, "mx-2 w-5/12")}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        disableToolbar
+                        variant="inline"
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Date picker inline"
+                        value={form.releasedDate}
+                        name="releasedDate"
+                        onChange={handleChange}
+                        KeyboardButtonProps={{
+                          "aria-label": "change date"
+                        }}
+                      />
+                    </MuiPickersUtilsProvider>
                   </FormControl>
                 </div>
               </div>
