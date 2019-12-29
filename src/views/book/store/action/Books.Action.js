@@ -1,5 +1,5 @@
 import axios from "axios";
-import {base_url} from "../../../../constants"
+import { base_url } from "../../../../constants";
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 

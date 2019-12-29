@@ -1,7 +1,7 @@
 import axios from "axios";
 import { base_url } from "../../../../constants";
 import * as contants from "../../../../constants";
-import qs from "querystring"
+import qs from "querystring";
 export const GET_BORROWING = "GET_BORROWING";
 export const DELETE_BORROWING = "DELETE_BORROWING";
 export const ADD_BORROWING = "ADD_BORROWING";
@@ -13,10 +13,10 @@ export const OPEN_EDIT_BORROWING_DIALOG = "OPEN_EDIT_BORROWING_DIALOG";
 export const CLOSE_EDIT_BORROWING_DIALOG = "CLOSE_EDIT_BORROWING_DIALOG";
 export const SET_STATUS_ACTION = "SET_STATUS_ACTION";
 
-
-
 export function getBorrowingById(borrowingCardId) {
-  const request = axios.get(`${base_url}/app/borrowing-card/${borrowingCardId}`);
+  const request = axios.get(
+    `${base_url}/app/borrowing-card/${borrowingCardId}`
+  );
 
   return dispatch =>
     request.then(response =>
@@ -55,20 +55,11 @@ export function setStatusAction(status) {
 
 export function updateBorrowing(borrowingCard) {
   return (dispatch, getState) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-      }
-    };
-  
     const request = axios.put(
-      `${base_url}/api/borrowings/${borrowingCard._id}`,
-      qs.stringify(borrowingCard),
-      config
+      `${base_url}/borrowing-card/${borrowingCard.id}`,
+      borrowingCard
     );
-  
+
     return request.then(response =>
       Promise.all([
         dispatch({
@@ -87,7 +78,9 @@ export function updateBorrowing(borrowingCard) {
 
 export function deleteBorrowing(borrowingCardId) {
   return (dispatch, getState) => {
-    const request = axios.delete(`${base_url}/app/borrowing-card/${borrowingCardId}`);
+    const request = axios.delete(
+      `${base_url}/app/borrowing-card/${borrowingCardId}`
+    );
     return request.then(response =>
       Promise.all([
         dispatch({

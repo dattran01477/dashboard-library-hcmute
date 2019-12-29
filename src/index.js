@@ -20,6 +20,8 @@ import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/vendor/nucleo/css/nucleo.css";
 import "react-table/react-table.css";
 import AdminLayout from "layouts/Admin.jsx";
+import { transitions, positions, Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 import AuthLayout from "layouts/Auth.jsx";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -28,19 +30,31 @@ import { createStore, compose, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import rootReducer from "./store/reducers";
 import thunk from "redux-thunk";
-import "./index.css"
+import "./index.css";
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
 
+// optional cofiguration
+const options = {
+  // you can also just use 'bottom center'
+  position: positions.BOTTOM_CENTER,
+  timeout: 5000,
+  offset: "30px",
+  // you can also just use 'scale'
+  transition: transitions.SCALE
+};
+
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/admin" render={props => <AdminLayout {...props} />} />
-        <Route path="/auth" render={props => <AuthLayout {...props} />} />
-        <Redirect from="/" to="/admin/index" />
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
+  <AlertProvider template={AlertTemplate} {...options}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/admin" render={props => <AdminLayout {...props} />} />
+          <Route path="/auth" render={props => <AuthLayout {...props} />} />
+          <Redirect from="/" to="/admin/index" />
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </AlertProvider>,
   document.getElementById("root")
 );

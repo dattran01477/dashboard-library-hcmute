@@ -12,6 +12,8 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useForm from "../../@core/hooks/useForm";
 import * as Action from "../../store/action";
+import * as Constant from "../../constants"
+
 
 const newAuthorState = {
   status: ""
@@ -102,10 +104,11 @@ function BorrowingDialog() {
             }}
           >
             <option value="" />
-            <option value="Active">Active</option>
-            <option value="Waiting">Waiting</option>
-            <option value="Cancel">Cancel</option>
-            <option value="Returned">Returned</option>
+            <option value={Constant.BORROW_STATUS.active}>Active</option>
+            <option value={Constant.BORROW_STATUS.waitting}>Waitting</option>
+            <option value={Constant.BORROW_STATUS.cancel}>Cancel</option>
+            <option value={Constant.BORROW_STATUS.returned}>Returned</option>
+            <option value={Constant.BORROW_STATUS.waitting_return}>Waitting Return</option>
           </Select>
         </FormControl>
       </div>

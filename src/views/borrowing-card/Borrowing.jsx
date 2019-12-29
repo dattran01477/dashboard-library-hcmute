@@ -1,15 +1,16 @@
+import { Chip, Fab, Icon } from "@material-ui/core";
 import Header from "components/Headers/Header.jsx";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Icon, Fab, Chip } from "@material-ui/core";
 import ReactTable from "react-table";
 import { Card, CardHeader, Container, Row } from "reactstrap";
-import * as Action from "../../store/action";
-import DateFormat from "../../ultils/datetime";
-import BorrowingDialog from "./BorrowingDialog";
-import * as constants from "../../constants";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import * as constants from "../../constants";
+import * as Action from "../../store/action";
+import DateFormat from "../../ultils/datetime";
+import { useAlert } from "react-alert";
+import BorrowingDialog from "./BorrowingDialog";
 
 function Borrowing() {
   const data = useSelector(state => state.borrowings.data);
@@ -17,6 +18,7 @@ function Borrowing() {
   const statusAction = useSelector(state => state.borrowing.statusAction);
   let stompClient = useSelector(state => state.borrowings.stompClient);
   const dispatch = useDispatch();
+  const alert = useAlert();
 
   const [borrowings, setBorrowings] = useState();
   const [pagging, setPagging] = useState({});
@@ -24,23 +26,23 @@ function Borrowing() {
   const columns = [
     {
       Header: "Người Mượn",
-      accessor: "user_id"
+      accessor: "userId"
     },
     {
       Header: "Trạng Thái",
       accessor: "status",
       className: "flex justify-center",
       Cell: row => {
-        if (row.value === "Active") {
+        if (row.value === "active") {
           return <Chip label="Đã Mượn" color="primary" />;
         }
-        if (row.value === "Waiting") {
+        if (row.value === "waiting") {
           return <Chip label="Đạng Đợi" color="inherit" />;
         }
-        if (row.value === "Cancel") {
+        if (row.value === "cancel") {
           return <Chip label="Đã Hủy" color="secondary" />;
         }
-        if (row.value === "Returned") {
+        if (row.value === "returned") {
           return <Chip label="Đã Trả" color="default" />;
         }
         return null;
@@ -73,6 +75,9 @@ function Borrowing() {
 
   function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
+    if (message != null) {
+      alert.show("Có phiếu mượn mới, vui lòng kiểm tra.");
+    }
     dispatch({
       type: Action.Borrowing.BorrowingsAction.GET_BORROWINGS,
       data: { ...message }
@@ -83,6 +88,7 @@ function Borrowing() {
     var socket = new SockJS("http://localhost:8080/app/ws");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, onConnected, onError);
+
     dispatch(Action.Borrowing.BorrowingsAction.setStompClient(stompClient));
   }, []);
 
