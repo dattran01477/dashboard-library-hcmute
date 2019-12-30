@@ -11,6 +11,7 @@ import * as Action from "../../store/action";
 import DateFormat from "../../ultils/datetime";
 import { useAlert } from "react-alert";
 import BorrowingDialog from "./BorrowingDialog";
+import * as Contant from "../../constants";
 
 function Borrowing() {
   const data = useSelector(state => state.borrowings.data);
@@ -33,17 +34,20 @@ function Borrowing() {
       accessor: "status",
       className: "flex justify-center",
       Cell: row => {
-        if (row.value === "active") {
+        if (row.value === Contant.BORROW_STATUS.active) {
           return <Chip label="Đã Mượn" color="primary" />;
         }
-        if (row.value === "waiting") {
+        if (row.value === Contant.BORROW_STATUS.waitting) {
           return <Chip label="Đạng Đợi" color="inherit" />;
         }
-        if (row.value === "cancel") {
+        if (row.value === Contant.BORROW_STATUS.cancel) {
           return <Chip label="Đã Hủy" color="secondary" />;
         }
-        if (row.value === "returned") {
+        if (row.value === Contant.BORROW_STATUS.returned) {
           return <Chip label="Đã Trả" color="default" />;
+        }
+        if (row.value === Contant.BORROW_STATUS.waitting_return) {
+          return <Chip label="Đã Trả" color="secondary" />;
         }
         return null;
       }
