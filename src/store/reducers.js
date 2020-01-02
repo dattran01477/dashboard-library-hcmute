@@ -7,7 +7,7 @@ import language from "../views/language/store/reducer/language.reducer";
 import languages from "../views/language/store/reducer/languages.reducer";
 import borrowing from "../views/borrowing-card/store/reducer/borrowing.reducer";
 import borrowings from "../views/borrowing-card/store/reducer/borrowings.reducer";
-
+import books from "../views/book/store/reducer/books.reducer";
 
 const reducer = combineReducers({
   authors,
@@ -17,7 +17,8 @@ const reducer = combineReducers({
   language,
   languages,
   borrowing,
-  borrowings
+  borrowings,
+  books
 });
 
 export default reducer;

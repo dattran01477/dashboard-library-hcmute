@@ -5,7 +5,7 @@ export const CHANGE_CRITERIA = "CHANGE_CRITERIA";
 export const SET_STOMP_CLIENT = "SET_STOMP_CLIENT";
 
 export function getBorrowings(criteria) {
-  const request = axios.get(`${base_url}/borrowing-card`, criteria);
+  const request = axios.get(`${base_url}/app/borrowing-card`, criteria);
 
   return dispatch =>
     request.then(response =>

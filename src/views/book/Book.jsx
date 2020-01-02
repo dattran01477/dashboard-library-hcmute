@@ -45,6 +45,7 @@ const newBook = {
   releasedTime: 0,
   reprint: 0,
   shortDescription: "",
+  rate: 0,
   status: "publish",
   thumbnail: "https://www.grocio.in/images/No_image_available.jpg"
 };
@@ -108,7 +109,7 @@ function Book(props) {
     if (props.match.params.idBook === "new") {
       setForm({ ...newBook });
     } else {
-      setForm({});
+      Action.Book.getBook(props.match.params.idBook, onSucessGetBook, onFail);
     }
   }, [setForm]);
 
@@ -136,16 +137,22 @@ function Book(props) {
     setLanguages(data.content);
   }
 
-  function handleSubmit() {
+  function onSucessGetBook(data) {
+    setForm(data);
+  }
+
+  function onFail(err) {}
+
+  function handleSubmit() { 
     Action.Book.saveBook(form, successCallBack, failCallBack);
   }
 
   function successCallBack(data) {
-    this.props.history.push("/app/book")
+    this.props.history.push("/app/book");
   }
 
   function failCallBack(err) {
-    console.log("failed")
+    console.log("failed");
   }
 
   return (
@@ -287,7 +294,7 @@ function Book(props) {
                       renderValue={item => item.name}
                       onChange={e => {
                         let formTmp = { ...form };
-                        formTmp["categories"] = [{...e.target.value}];
+                        formTmp["categories"] = [{ ...e.target.value }];
                         setForm({ ...formTmp });
                       }}
                     >
@@ -468,6 +475,21 @@ function Book(props) {
 
               <div className="mx-auto w-full">
                 <div className="flex flex-row m-4">
+                  <FormControl
+                    className={(classes.margin, "mx-2 w-5/12")}
+                    fullWidth
+                  >
+                    <TextField
+                      id="outlined-textarea"
+                      label="Số điểm đánh giá"
+                      placeholder="Placeholder"
+                      name="rate"
+                      type="number"
+                      multiline
+                      variant="outlined"
+                    />
+                  </FormControl>
+
                   <FormControl
                     className={(classes.margin, "mx-2 w-5/12")}
                     fullWidth

@@ -81,3 +81,18 @@ export function saveBook(book, callBackSuccess, callBackFail) {
     .then(response => callBackSuccess(response.data))
     .catch(err => callBackFail(err));
 }
+
+export function getBooks(criteria, callBackSuccess, callBackFail) {
+  const request = axios.get(`${base_url}/app/books`, criteria);
+  request
+    .then(response => callBackSuccess(response.data))
+    .catch(err => callBackFail(err));
+}
+
+
+export function getBook(bookId, callBackSuccess, callBackFail) {
+  const request = axios.get(`${base_url}/app/books/${bookId}`);
+  request
+    .then(response => callBackSuccess(response.data))
+    .catch(err => callBackFail(err));
+}
